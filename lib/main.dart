@@ -31,14 +31,14 @@ class MyAppState extends State<MyApp> {
           )),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Loopt In'),
+          title: Text('ReachIT'),
         ),
         body: _pageOptions[_selectedTab],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedTab,
           onTap: (int index) {
             setState(() {
-             _selectedTab=index;
+              _selectedTab = index;
             });
           },
           items: [
