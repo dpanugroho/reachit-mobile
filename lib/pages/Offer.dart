@@ -22,25 +22,10 @@ class Offer extends StatelessWidget {
               ),
             ),
           ),
-          Text("BY CATEGORY", style: TextStyle(fontSize: 20),),
+          Text("THIS WEEK", style: TextStyle(fontSize: 20),),
           Container(
             height: 300.0,
-            child: ListView(
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.shopping_cart),
-                  title: Text('Bathroom Supplies'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.shopping_cart),
-                  title: Text('Fruits and Vegetables'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.shopping_cart),
-                  title: Text('Bread'),
-                ),
-              ],
-            ),
+            child: ListView(),
           ),
         ],
       ),
