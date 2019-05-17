@@ -10,10 +10,9 @@ class Item {
         quantity = json['quantity'],
         price = json['price'];
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'name': name,
         'quantity': quantity,
-        'price' : price,
+        'price': price,
       };
 }

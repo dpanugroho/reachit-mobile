@@ -7,8 +7,7 @@ import 'package:reachit/models/item.dart';
 class Expense extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String responseString =
-    """
+    String responseString = """
   {
       "transactions": [
           {
@@ -73,19 +72,18 @@ class Expense extends StatelessWidget {
     Map<String, dynamic> jsonResponse = jsonDecode(responseString);
 //    final List<ListItem> items = new List();
     final List listItems = new List();
-    List transactions =  jsonResponse['transactions'];
-    for(int i=0; i<transactions.length; i++){
+    List transactions = jsonResponse['transactions'];
+    for (int i = 0; i < transactions.length; i++) {
       List transactionItems = transactions[i]['items'];
       DateTime parsedDate = DateTime.parse(transactions[i]['last_modified_at']);
       listItems.add(parsedDate.toLocal());
-      for(int j=0; j<transactionItems.length; j++){
+      for (int j = 0; j < transactionItems.length; j++) {
         Map currentItemMap = transactionItems[j];
         var currentItem = new Item.fromJson(currentItemMap);
         listItems.add(currentItem);
       }
     }
     return ListView.builder(
-
       // Let the ListView know how many items it needs to build
       itemCount: listItems.length,
       // Provide a builder function. This is where the magic happens! We'll
@@ -111,7 +109,6 @@ class Expense extends StatelessWidget {
     );
   }
 
-
   Widget buildListItem(item) {
     return Container(
       child: Row(
@@ -119,9 +116,7 @@ class Expense extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text("${item['name']} (${item['qty']})",
-              style: TextStyle(
-                  color: Colors.black
-              )),
+              style: TextStyle(color: Colors.black)),
           Text("€ ${item['price']}",
               style: TextStyle(
                 fontSize: 14.0,

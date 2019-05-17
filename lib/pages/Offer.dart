@@ -8,7 +8,10 @@ class Offer extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: <Widget>[
-          Text("FOR YOU", style: TextStyle(fontSize: 20),),
+          Text(
+            "FOR YOU",
+            style: TextStyle(fontSize: 20),
+          ),
           Card(
             child: new Container(
               width: 360.0,
@@ -22,7 +25,10 @@ class Offer extends StatelessWidget {
               ),
             ),
           ),
-          Text("THIS WEEK", style: TextStyle(fontSize: 20),),
+          Text(
+            "THIS WEEK",
+            style: TextStyle(fontSize: 20),
+          ),
           Container(
             height: 300.0,
             child: ListView(),

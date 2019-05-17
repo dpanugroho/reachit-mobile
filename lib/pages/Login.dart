@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
+
   @override
   _LoginPageState createState() => new _LoginPageState();
 }
@@ -13,7 +15,11 @@ class _LoginPageState extends State<LoginPage> {
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 48.0,
-        child: Image.asset('assets/logo.png',width: 150, height: 100,),
+        child: Image.asset(
+          'assets/logo.png',
+          width: 150,
+          height: 100,
+        ),
       ),
     );
 
@@ -46,7 +52,8 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-//          Navigator.of(context).pushNamed(.tag);
+          // TODO: Implement some real login here
+          Navigator.of(context).pushNamed("/HomePage");
         },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
