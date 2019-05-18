@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 BoxDecoration createBoxDecoration() {
   return BoxDecoration(
@@ -18,3 +19,22 @@ BoxDecoration createBoxDecoration() {
   );
 }
 
+
+Widget buildLogo() {
+  return Container (
+    padding: EdgeInsets.only(bottom: 8.0),
+    child: Row(
+      children: <Widget>[
+        Icon(
+          Icons.account_balance_wallet,
+          color: Colors.white70,
+          size: 32,
+        ),
+        Text(
+          "ReachIT",
+          style: TextStyle(color: Colors.white, fontSize: 32),
+        )
+      ],
+    ),
+  );
+}

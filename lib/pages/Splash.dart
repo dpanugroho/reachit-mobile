@@ -35,6 +35,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.lightBlue);
+    return Container(color: Color.fromRGBO(255, 94, 98, 1.0));
   }
 }

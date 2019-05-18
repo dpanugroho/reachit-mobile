@@ -139,8 +139,10 @@ class Expense extends StatelessWidget {
           itemCount: transactions.length,
           itemBuilder: (context, index) {
             if (index == 0) {
-              return _buildCard();
+              return buildLogo();
             } else if (index == 1) {
+              return _buildCard();
+            } else if (index == 2) {
               return _buildCardTwo();
             } else {
               final currentTransaction = transactions[index];
@@ -217,19 +219,6 @@ Widget _buildCard() {
   DateTime now = DateTime.now();
   return Column(
     children: <Widget>[
-      Row(
-        children: <Widget>[
-          Icon(
-            Icons.account_balance_wallet,
-            color: Colors.white70,
-            size: 32,
-          ),
-          Text(
-            "ReachIT",
-            style: TextStyle(color: Colors.white, fontSize: 32),
-          )
-        ],
-      ),
       SizedBox(
         height: 256,
         child: Card(

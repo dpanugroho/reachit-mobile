@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage> {
-  int _selectedTab = 0;
+  int _selectedTab = 1;
 
   final _pageOptions = [
     Offer(),
@@ -47,6 +47,7 @@ class HomeState extends State<HomePage> {
   CurvedNavigationBar buildBottomNavBar() {
     CurvedNavigationBar _bottomNavigationBar = CurvedNavigationBar(
         animationDuration: Duration(milliseconds: 250),
+        index:1,
         backgroundColor: Color.fromRGBO(255, 94, 98, 1.0),
         onTap: (int index) {
           setState(() {
