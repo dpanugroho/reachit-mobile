@@ -19,7 +19,7 @@ class ReachItAppState extends State<ReachItApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          primaryColor: Colors.lightBlue,
+          primaryColor: Color.fromRGBO(255, 94, 98, 1.0),
           primaryTextTheme: TextTheme(
             title: TextStyle(color: Colors.white),
           )),

@@ -121,52 +121,64 @@ class Expense extends StatelessWidget {
     transactions.add(0);
     transactions.add(1);
     transactions.addAll(jsonResponse['transactions']);
-    return Container(
-      padding: EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 0.0),
-      decoration: createBoxDecoration(),
-      child: ListView.builder(
-        itemCount: transactions.length,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return _buildCard();
-          } else if(index == 1) {
-            return _buildCardTwo();
-          } else {
-            final currentTransaction = transactions[index];
-            DateTime parsedDate =
-                DateTime.parse(currentTransaction['last_modified_at']);
-            String dateToShow =
-                DateFormat('EEEE, MMM dd yyyy').format(parsedDate);
-            DateTime now = new DateTime.now();
-            var dateDifference = now.difference(parsedDate).inDays;
-            if (dateDifference == 0) {
-              dateToShow = "Today";
-            } else if (dateDifference == 1) {
-              dateToShow = "Yesterday";
-            }
-            List<Widget> currentTransactionItemWidget = new List();
-            for (int j = 0; j < currentTransaction['items'].length; j++) {
-              Map currentItemMap = currentTransaction['items'][j];
-              var currentItem = new Item.fromJson(currentItemMap);
-              currentTransactionItemWidget.add(_buildItem(currentItem));
-            }
-
-            return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    dateToShow,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w100),
-                  ),
-                  Column(
-                    children: currentTransactionItemWidget,
-                  )
-                ]);
-          }
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => _buildAddExpenseDialog(context),
+          );
         },
+        child: Icon(Icons.add_shopping_cart),
+        backgroundColor: Colors.pink,
+      ),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 0.0),
+        decoration: createBoxDecoration(),
+        child: ListView.builder(
+          itemCount: transactions.length,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return _buildCard();
+            } else if (index == 1) {
+              return _buildCardTwo();
+            } else {
+              final currentTransaction = transactions[index];
+              DateTime parsedDate =
+                  DateTime.parse(currentTransaction['last_modified_at']);
+              String dateToShow =
+                  DateFormat('EEEE, MMM dd yyyy').format(parsedDate);
+              DateTime now = new DateTime.now();
+              var dateDifference = now.difference(parsedDate).inDays;
+              if (dateDifference == 0) {
+                dateToShow = "Today";
+              } else if (dateDifference == 1) {
+                dateToShow = "Yesterday";
+              }
+              List<Widget> currentTransactionItemWidget = new List();
+              for (int j = 0; j < currentTransaction['items'].length; j++) {
+                Map currentItemMap = currentTransaction['items'][j];
+                var currentItem = new Item.fromJson(currentItemMap);
+                currentTransactionItemWidget.add(_buildItem(currentItem));
+              }
+
+              return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      dateToShow,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w100),
+                    ),
+                    Column(
+                      children: currentTransactionItemWidget,
+                    )
+                  ]);
+            }
+          },
+        ),
       ),
     );
   }
@@ -182,9 +194,11 @@ Widget _buildCardTwo() {
   );
 }
 
-
 Widget _buildItem(Item item) => ListTile(
-      leading: Icon(Icons.shopping_basket, color: Colors.white,),
+      leading: Icon(
+        Icons.shopping_basket,
+        color: Colors.white,
+      ),
       title: Text(
         item.name,
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -205,8 +219,15 @@ Widget _buildCard() {
     children: <Widget>[
       Row(
         children: <Widget>[
-          Icon(Icons.account_balance_wallet, color: Colors.white70, size: 32,),
-          Text("ReachIT", style: TextStyle(color: Colors.white, fontSize: 32),)
+          Icon(
+            Icons.account_balance_wallet,
+            color: Colors.white70,
+            size: 32,
+          ),
+          Text(
+            "ReachIT",
+            style: TextStyle(color: Colors.white, fontSize: 32),
+          )
         ],
       ),
       SizedBox(
@@ -214,23 +235,55 @@ Widget _buildCard() {
         child: Card(
           color: Colors.white,
           elevation: 2.0,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
 //            Text(
 //              DateFormat('MMM').format(now),
 //              style: TextStyle(color: Colors.black54, fontSize: 24),
 //            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[],
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[],
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
+    ],
+  );
+}
+
+Widget _buildAddExpenseDialog(BuildContext context) {
+  return new AlertDialog(
+    title: const Text('Add new expense'),
+    content: new Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        TextFormField(
+          decoration: InputDecoration(labelText: 'What it is?'),
         ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'How much? (e.g 2, 2kg'),
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'What is the total price?'),
+        ),
+//        _buildAboutText(),
+//        _buildLogoAttribution(),
+      ],
+    ),
+    actions: <Widget>[
+      new FlatButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        textColor: Theme.of(context).primaryColor,
+        child: const Text('Add it!'),
       ),
     ],
   );

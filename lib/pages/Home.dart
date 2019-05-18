@@ -18,10 +18,10 @@ class HomeState extends State<HomePage> {
   int _selectedTab = 0;
 
   final _pageOptions = [
-    Expense(),
-    AddExpense(),
     Offer(),
+    Expense(),
     Settings(),
+    AddExpense(),
   ];
 
   @override
@@ -55,17 +55,18 @@ class HomeState extends State<HomePage> {
         },
         items: [
           Icon(
-            Icons.shopping_cart,
-            size: 30,
-          ),
-          Icon(
-            Icons.add_circle,
-            size: 30,
-          ),
-          Icon(
             Icons.local_offer,
             size: 30,
           ),
+          Icon(
+            Icons.shopping_cart,
+            size: 30,
+          ),
+//          Icon(
+//            Icons.add_circle,
+//            size: 30,
+//          ),
+
           Icon(
             Icons.settings,
             size: 30,
