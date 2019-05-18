@@ -35,11 +35,6 @@ class Expense extends StatelessWidget {
                       "name": "Strawberry",
                       "price": 1.99,
                       "quantity": 1.0
-                  },
-                  {
-                      "name": "Coffee",
-                      "price": 0.49,
-                      "quantity": 1.0
                   }
               ],
               "created_at": "2019-05-17T12:38:00.657000",
@@ -120,6 +115,7 @@ class Expense extends StatelessWidget {
     List transactions = List();
     transactions.add(0);
     transactions.add(1);
+    transactions.add(2);
     transactions.addAll(jsonResponse['transactions']);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -210,7 +206,7 @@ Widget _buildItem(Item item) => ListTile(
         style: TextStyle(color: Colors.white),
       ),
       trailing: Text(
-        item.price.toString(),
+      "€ "+item.price.toString(),
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
     );

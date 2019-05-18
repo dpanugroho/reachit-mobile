@@ -26,7 +26,7 @@ class Offer extends StatelessWidget {
           return Card(
             elevation: 3.0,
             child: Container(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.only(left:12.0),
               child: TextField(
                 decoration:
                     InputDecoration(labelText: "Looking for something?"),

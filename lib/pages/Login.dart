@@ -15,10 +15,13 @@ class _LoginPageState extends State<LoginPage> {
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 48.0,
-        child: Image.asset(
-          'assets/logo.png',
-          width: 150,
-          height: 100,
+        child: Text(
+          "ReachIT",
+          style: TextStyle(
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.w100,
+              fontSize: 48,
+              color: Colors.white),
         ),
       ),
     );
@@ -26,17 +29,17 @@ class _LoginPageState extends State<LoginPage> {
     final email = TextFormField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
-      initialValue: 'username',
       decoration: InputDecoration(
         hintText: 'Username',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32.0),
+        ),
       ),
     );
 
     final password = TextFormField(
       autofocus: false,
-      initialValue: 'some password',
       obscureText: true,
       decoration: InputDecoration(
         hintText: 'Password',
@@ -56,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.of(context).pushNamed("/HomePage");
         },
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
+        color: Colors.pink,
         child: Text('Log In', style: TextStyle(color: Colors.white)),
       ),
     );
@@ -64,17 +67,17 @@ class _LoginPageState extends State<LoginPage> {
     final forgotLabel = FlatButton(
       child: Text(
         'Forgot password?',
-        style: TextStyle(color: Colors.black54),
+        style: TextStyle(color: Colors.white54),
       ),
       onPressed: () {},
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromRGBO(255, 94, 98, 1.0),
       body: Container(
         child: ListView(
           shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
+          padding: EdgeInsets.only(top: 256, left: 24.0, right: 24.0),
           children: <Widget>[
             logo,
             SizedBox(height: 48.0),
