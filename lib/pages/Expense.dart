@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:reachit/commons/ui.dart';
 import 'package:reachit/models/item.dart';
+import 'package:intl/intl.dart';
 
 class Expense extends StatelessWidget {
   @override
@@ -23,8 +25,8 @@ class Expense extends StatelessWidget {
                       "quantity": 10.0
                   }
               ],
-              "created_at": "2019-05-15T12:36:12.215000",
-              "last_modified_at": "2019-05-15T12:36:12.216000",
+              "created_at": "2019-05-18T12:36:12.215000",
+              "last_modified_at": "2019-05-18T12:36:12.216000",
               "id": "5cdc07bc6136df871f303bb4"
           },
           {
@@ -40,8 +42,8 @@ class Expense extends StatelessWidget {
                       "quantity": 1.0
                   }
               ],
-              "created_at": "2019-05-15T12:38:00.657000",
-              "last_modified_at": "2019-05-15T12:38:00.657000",
+              "created_at": "2019-05-17T12:38:00.657000",
+              "last_modified_at": "2019-05-17T12:38:00.657000",
               "id": "5cdc0828dcb64c8975a04e0f"
           },
           {
@@ -65,66 +67,171 @@ class Expense extends StatelessWidget {
               "created_at": "2019-05-15T12:42:16.592000",
               "last_modified_at": "2019-05-15T12:42:16.593000",
               "id": "5cdc0928c3cefcb942b4ea14"
+          },
+          {
+              "items": [
+                  {
+                      "name": "Orange",
+                      "price": 3.0,
+                      "quantity": 2.0
+                  },
+                  {
+                      "name": "Tea",
+                      "price": 4.49,
+                      "quantity": 1.0
+                  },
+                  {
+                      "name": "Bread",
+                      "price": 9.99,
+                      "quantity": 1.0
+                  }
+              ],
+              "created_at": "2019-05-14T12:42:16.592000",
+              "last_modified_at": "2019-05-15T12:42:16.593000",
+              "id": "5cdc0928c3cefcb942b4ea14"
+          },
+          {
+              "items": [
+                  {
+                      "name": "Orange",
+                      "price": 3.0,
+                      "quantity": 2.0
+                  },
+                  {
+                      "name": "Tea",
+                      "price": 4.49,
+                      "quantity": 1.0
+                  },
+                  {
+                      "name": "Bread",
+                      "price": 9.99,
+                      "quantity": 1.0
+                  }
+              ],
+              "created_at": "2019-05-11T12:42:16.592000",
+              "last_modified_at": "2019-05-15T12:42:16.593000",
+              "id": "5cdc0928c3cefcb942b4ea14"
           }
+          
       ]
   }
   """;
     Map<String, dynamic> jsonResponse = jsonDecode(responseString);
-//    final List<ListItem> items = new List();
-    final List listItems = new List();
-    List transactions = jsonResponse['transactions'];
-    for (int i = 0; i < transactions.length; i++) {
-      List transactionItems = transactions[i]['items'];
-      DateTime parsedDate = DateTime.parse(transactions[i]['last_modified_at']);
-      listItems.add(parsedDate.toLocal());
-      for (int j = 0; j < transactionItems.length; j++) {
-        Map currentItemMap = transactionItems[j];
-        var currentItem = new Item.fromJson(currentItemMap);
-        listItems.add(currentItem);
-      }
-    }
-    return ListView.builder(
-      // Let the ListView know how many items it needs to build
-      itemCount: listItems.length,
-      // Provide a builder function. This is where the magic happens! We'll
-      // convert each item into a Widget based on the type of item it is.
-      itemBuilder: (context, index) {
-        final item = listItems[index];
-        if (item is DateTime) {
-          print(item);
-          return ListTile(
-            title: Text(
-              item.toString(),
-              style: Theme.of(context).textTheme.headline,
-            ),
-          );
-        } else if (item is Item) {
-          return ListTile(
-            title: Text(item.name),
-            subtitle: Text('You can save € 5'),
-            trailing: Text(item.price.toString()),
-          );
-        }
-      },
+    List transactions = List();
+    transactions.add(0);
+    transactions.add(1);
+    transactions.addAll(jsonResponse['transactions']);
+    return Container(
+      padding: EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 0.0),
+      decoration: createBoxDecoration(),
+      child: ListView.builder(
+        itemCount: transactions.length,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return _buildCard();
+          } else if(index == 1) {
+            return _buildCardTwo();
+          } else {
+            final currentTransaction = transactions[index];
+            DateTime parsedDate =
+                DateTime.parse(currentTransaction['last_modified_at']);
+            String dateToShow =
+                DateFormat('EEEE, MMM dd yyyy').format(parsedDate);
+            DateTime now = new DateTime.now();
+            var dateDifference = now.difference(parsedDate).inDays;
+            if (dateDifference == 0) {
+              dateToShow = "Today";
+            } else if (dateDifference == 1) {
+              dateToShow = "Yesterday";
+            }
+            List<Widget> currentTransactionItemWidget = new List();
+            for (int j = 0; j < currentTransaction['items'].length; j++) {
+              Map currentItemMap = currentTransaction['items'][j];
+              var currentItem = new Item.fromJson(currentItemMap);
+              currentTransactionItemWidget.add(_buildItem(currentItem));
+            }
+
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    dateToShow,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w100),
+                  ),
+                  Column(
+                    children: currentTransactionItemWidget,
+                  )
+                ]);
+          }
+        },
+      ),
     );
   }
+}
 
-  Widget buildListItem(item) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
+Widget _buildCardTwo() {
+  DateTime now = DateTime.now();
+  return SizedBox(
+    height: 72,
+    child: Card(
+      elevation: 3.0,
+    ),
+  );
+}
+
+
+Widget _buildItem(Item item) => ListTile(
+      leading: Icon(Icons.shopping_basket, color: Colors.white,),
+      title: Text(
+        item.name,
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(
+        'You can save € 5',
+        style: TextStyle(color: Colors.white),
+      ),
+      trailing: Text(
+        item.price.toString(),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+    );
+
+Widget _buildCard() {
+  DateTime now = DateTime.now();
+  return Column(
+    children: <Widget>[
+      Row(
         children: <Widget>[
-          Text("${item['name']} (${item['qty']})",
-              style: TextStyle(color: Colors.black)),
-          Text("€ ${item['price']}",
-              style: TextStyle(
-                fontSize: 14.0,
-                color: Colors.black54,
-              )),
+          Icon(Icons.account_balance_wallet, color: Colors.white70, size: 32,),
+          Text("ReachIT", style: TextStyle(color: Colors.white, fontSize: 32),)
         ],
       ),
-      padding: EdgeInsets.all(10.0),
-    );
-  }
+      SizedBox(
+        height: 256,
+        child: Card(
+          color: Colors.white,
+          elevation: 2.0,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+//            Text(
+//              DateFormat('MMM').format(now),
+//              style: TextStyle(color: Colors.black54, fontSize: 24),
+//            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[],
+            ),
+          ],
+        ),
+      ),
+        ),
+      ),
+    ],
+  );
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../main.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'Expense.dart';
 import 'Offer.dart';
 import 'AddExpense.dart';
+import 'Settings.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,65 +21,56 @@ class HomeState extends State<HomePage> {
     Expense(),
     AddExpense(),
     Offer(),
+    Settings(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
-      backgroundColor: Colors.white,
+//      appBar: buildAppBar(),
+      backgroundColor: Colors.transparent,
       body: _pageOptions[_selectedTab],
-      bottomNavigationBar: buildBottomNavigationBar(),
+      bottomNavigationBar: buildBottomNavBar(),
     );
   }
 
   AppBar buildAppBar() {
     return AppBar(
+      backgroundColor: Color.fromRGBO(255, 153, 102, 3.0),
       title: Text('ReachIT'),
+      elevation: 0.0,
+      actions: <Widget>[],
+      leading: new Container(),
     );
   }
 
-  BottomNavigationBar buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      backgroundColor: Color.fromRGBO(134, 222, 183, 1.0),
-      currentIndex: _selectedTab,
-      onTap: (int index) {
-        setState(() {
-          _selectedTab = index;
-        });
-      },
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.shopping_basket,
-            color: Colors.white,
+  CurvedNavigationBar buildBottomNavBar() {
+    CurvedNavigationBar _bottomNavigationBar = CurvedNavigationBar(
+        animationDuration: Duration(milliseconds: 250),
+        backgroundColor: Color.fromRGBO(255, 94, 98, 1.0),
+        onTap: (int index) {
+          setState(() {
+            _selectedTab = index;
+          });
+        },
+        items: [
+          Icon(
+            Icons.shopping_cart,
+            size: 30,
           ),
-          title: Text(
-            'Expense',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
+          Icon(
             Icons.add_circle,
-            color: Colors.white,
+            size: 30,
           ),
-          title: Text(
-            'Add',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
+          Icon(
             Icons.local_offer,
-            color: Colors.white,
+            size: 30,
           ),
-          title: Text(
-            'Offers',
-            style: TextStyle(color: Colors.white),
+          Icon(
+            Icons.settings,
+            size: 30,
           ),
-        ),
-      ],
-    );
+        ]);
+    return _bottomNavigationBar;
   }
 }

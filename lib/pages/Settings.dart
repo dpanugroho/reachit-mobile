@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:reachit/commons/ui.dart';
 
-class Offer extends StatelessWidget {
+class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: FractionalOffset.center,
       decoration: createBoxDecoration(),
+      padding: EdgeInsets.all(24),
+      child: Text("Settings", style: TextStyle(fontSize: 28),),
     );
   }
 }
