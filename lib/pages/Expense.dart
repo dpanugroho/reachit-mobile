@@ -265,13 +265,13 @@ Widget _buildAddExpenseDialog(BuildContext context) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         TextFormField(
-          decoration: InputDecoration(labelText: 'What it is?'),
+          decoration: InputDecoration(labelText: 'Name'),
         ),
         TextFormField(
-          decoration: InputDecoration(labelText: 'How much? (e.g 2, 2kg'),
+          decoration: InputDecoration(labelText: 'Quantity'),
         ),
         TextFormField(
-          decoration: InputDecoration(labelText: 'What is the total price?'),
+          decoration: InputDecoration(labelText: 'Price (total)'),
         ),
 //        _buildAboutText(),
 //        _buildLogoAttribution(),
