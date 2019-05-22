@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:reachit/commons/ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -115,31 +116,9 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setString("accessToken", jsonResponseBody['access_token']);
       Navigator.of(context).pushNamed("/HomePage");
     } else {
-      _showLoginErrorDialog(jsonResponseBody['message']);
+      showErrorDialog(context, jsonResponseBody['message']);
     }
   }
 
-  void _showLoginErrorDialog(String message) {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Login error"),
-          content: new Text(message),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
 }
