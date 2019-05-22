@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -8,6 +12,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final logo = Hero(
@@ -29,8 +36,9 @@ class _LoginPageState extends State<LoginPage> {
     final email = TextFormField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
+      controller: emailController,
       decoration: InputDecoration(
-        hintText: 'Username',
+        hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32.0),
@@ -41,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
     final password = TextFormField(
       autofocus: false,
       obscureText: true,
+      controller: passwordController,
       decoration: InputDecoration(
         hintText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -55,8 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-          // TODO: Implement some real login here
-          Navigator.of(context).pushNamed("/HomePage");
+          _login();
         },
         padding: EdgeInsets.all(12),
         color: Colors.pink,
@@ -69,7 +77,8 @@ class _LoginPageState extends State<LoginPage> {
         'Forgot password?',
         style: TextStyle(color: Colors.white54),
       ),
-      onPressed: () {},
+      onPressed: () {
+      },
     );
 
     return Scaffold(
@@ -92,4 +101,45 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  void _login() async {
+    var url = 'https://reachit-api.herokuapp.com/users/login';
+    var response = await http.post(url, body: {
+      'email': emailController.text,
+      'password': passwordController.text
+    });
+    Map<String, dynamic> jsonResponseBody = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString("accessToken", jsonResponseBody['access_token']);
+      Navigator.of(context).pushNamed("/HomePage");
+    } else {
+      _showLoginErrorDialog(jsonResponseBody['message']);
+    }
+  }
+
+  void _showLoginErrorDialog(String message) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Login error"),
+          content: new Text(message),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
