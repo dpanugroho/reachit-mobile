@@ -129,7 +129,7 @@ class Expense extends StatelessWidget {
         backgroundColor: Colors.pink,
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 0.0),
+        padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
         decoration: createBoxDecoration(),
         child: ListView.builder(
           itemCount: transactions.length,
@@ -167,7 +167,7 @@ class Expense extends StatelessWidget {
                       dateToShow,
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.w100),
                     ),
                     Column(
@@ -196,18 +196,19 @@ Widget _buildItem(Item item) => ListTile(
       leading: Icon(
         Icons.shopping_basket,
         color: Colors.white,
+        size: 24,
       ),
       title: Text(
         item.name,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
       ),
       subtitle: Text(
-        'You can save € 5',
-        style: TextStyle(color: Colors.white),
+        'You can save € 2!',
+        style: TextStyle(color: Colors.yellow, fontSize: 14),
       ),
       trailing: Text(
       "€ "+item.price.toString(),
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
       ),
     );
 
@@ -257,6 +258,12 @@ Widget _buildAddExpenseDialog(BuildContext context) {
         ),
         TextFormField(
           decoration: InputDecoration(labelText: 'Price (total)'),
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Merchant'),
+        ),
+        TextFormField(
+          decoration: InputDecoration(labelText: 'Merchant'),
         ),
 //        _buildAboutText(),
 //        _buildLogoAttribution(),

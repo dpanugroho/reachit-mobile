@@ -7,7 +7,7 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     List transactions = List();
     return Container(
-      padding: EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 0.0),
+      padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
       decoration: createBoxDecoration(),
       child: ListView.builder(itemBuilder: (context, index) {
         if (index == 0) {

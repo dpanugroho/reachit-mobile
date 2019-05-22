@@ -6,7 +6,7 @@ class Offer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 0.0),
+      padding: EdgeInsets.fromLTRB(16.0, 32.0, 8.0, 0.0),
       decoration: createBoxDecoration(),
       child: ListView.builder(itemBuilder: (context, index) {
         if (index == 0) {
@@ -15,7 +15,7 @@ class Offer extends StatelessWidget {
           return Container(
 //            color: Colors.white,
             padding: EdgeInsets.only(bottom: 8),
-            height: 512,
+            height: 352,
             child: PageView(
               controller: PageController(viewportFraction: 0.8),
               scrollDirection: Axis.horizontal,
@@ -26,6 +26,7 @@ class Offer extends StatelessWidget {
           return Card(
             elevation: 3.0,
             child: Container(
+              height: 64,
               padding: EdgeInsets.only(left:12.0),
               child: TextField(
                 decoration:

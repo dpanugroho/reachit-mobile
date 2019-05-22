@@ -48,6 +48,7 @@ class HomeState extends State<HomePage> {
     CurvedNavigationBar _bottomNavigationBar = CurvedNavigationBar(
         animationDuration: Duration(milliseconds: 250),
         index:1,
+        height: 48,
         backgroundColor: Color.fromRGBO(255, 94, 98, 1.0),
         onTap: (int index) {
           setState(() {
@@ -57,20 +58,16 @@ class HomeState extends State<HomePage> {
         items: [
           Icon(
             Icons.local_offer,
-            size: 30,
+            size: 24,
           ),
           Icon(
             Icons.shopping_cart,
-            size: 30,
+            size: 24,
           ),
-//          Icon(
-//            Icons.add_circle,
-//            size: 30,
-//          ),
 
           Icon(
             Icons.settings,
-            size: 30,
+            size: 24,
           ),
         ]);
     return _bottomNavigationBar;
