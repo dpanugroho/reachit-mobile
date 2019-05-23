@@ -9,15 +9,11 @@ import 'package:reachit/models/item.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:tuple/tuple.dart';
 
 class Expense extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-//    getCurrentUserTransaction().then((s) {
-//      Map<String, dynamic> jsonResponse = jsonDecode(s);
-//      transactions.addAll(jsonResponse['transactions']);
-//      print(transactions);
-//    });
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -38,13 +34,17 @@ class Expense extends StatelessWidget {
               if (snapshot.data == null) {
                 return Container(
                   child: Center(
-                    child: Text("Loading..", style: TextStyle(color: Colors.white),),
+                    child: Text(
+                      "Loading..",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 );
               } else {
                 var transactions = snapshot.data;
                 return ListView.builder(
                     itemCount: snapshot.data.length,
+
                     itemBuilder: (BuildContext context, int index) {
                       if (index == 0) {
                         return buildLogo();
@@ -53,42 +53,34 @@ class Expense extends StatelessWidget {
                       } else if (index == 2) {
                         return _buildCardTwo();
                       } else {
-                        final currentTransaction = transactions[index];
-                        DateTime parsedDate = DateTime.parse(
-                            currentTransaction['last_modified_at']);
-                        String dateToShow =
-                            DateFormat('EEEE, MMM dd yyyy').format(parsedDate);
-                        DateTime now = new DateTime.now();
-                        var dateDifference = now.difference(parsedDate).inDays;
-                        if (dateDifference == 0) {
-                          dateToShow = "Today";
-                        } else if (dateDifference == 1) {
-                          dateToShow = "Yesterday";
-                        }
+                        var currentRow = transactions[index];
+                        if (currentRow.item1 == "date") {
 
-                        List<Widget> currentTransactionItemWidget = new List();
-                        for (int j = 0;
-                            j < currentTransaction['items'].length;
-                            j++) {
-                          Map currentItemMap = currentTransaction['items'][j];
-                          var currentItem = new Item.fromJson(currentItemMap);
-                          currentTransactionItemWidget
-                              .add(_buildItem(currentItem));
+
+                          return Text(
+                            getDateToShow(currentRow.item2),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w100),
+                          );
                         }
-                        return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                dateToShow,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w100),
-                              ),
-                              Column(
-                                children: currentTransactionItemWidget,
-                              )
-                            ]);
+                        else if (currentRow.item1 == "items") {
+                          print(currentRow.item2);
+                          List<Widget> currentTransactionItemWidget =
+                              new List();
+                          for (int j = 0;
+                              j < currentRow.item2.length;
+                              j++) {
+                            Map currentItemMap = currentRow.item2[j];
+                            var currentItem = new Item.fromJson(currentItemMap);
+                            currentTransactionItemWidget
+                                .add(_buildItem(currentItem));
+                          }
+                          return Column(
+                            children: currentTransactionItemWidget,
+                          );
+                        }
                       }
                     });
               }
@@ -99,7 +91,6 @@ class Expense extends StatelessWidget {
 }
 
 Widget _buildCardTwo() {
-  DateTime now = DateTime.now();
   return SizedBox(
     height: 72,
     child: Card(
@@ -131,7 +122,6 @@ Widget _buildItem(Item item) => ListTile(
     );
 
 Widget _buildCard() {
-  DateTime now = DateTime.now();
   return Column(
     children: <Widget>[
       SizedBox(
@@ -144,10 +134,6 @@ Widget _buildCard() {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-//            Text(
-//              DateFormat('MMM').format(now),
-//              style: TextStyle(color: Colors.black54, fontSize: 24),
-//            ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[],
@@ -242,5 +228,44 @@ Future<List> getCurrentUserTransaction() async {
   var response =
       await http.get(url, headers: {HttpHeaders.authorizationHeader: auth});
   var jsonResponse = jsonDecode(response.body)['transactions'];
-  return jsonResponse;
+
+  DateTime latestTransactionDate =
+      DateTime.parse(jsonResponse[0]['last_modified_at']).toLocal();
+  List currentDateItems = [];
+  List dayGroupedTransaction = [];
+
+  for (var t in jsonResponse) {
+    DateTime currentTransactionDate =
+        DateTime.parse(t['last_modified_at']).toLocal();
+    if (latestTransactionDate.difference(currentTransactionDate).inDays != 0) {
+      dayGroupedTransaction
+          .add(Tuple2<String, List>('items', currentDateItems));
+      dayGroupedTransaction
+          .add(Tuple2<String, DateTime>('date', latestTransactionDate));
+      currentDateItems = [];
+      latestTransactionDate = currentTransactionDate;
+    }
+    for (var item in t['items']) {
+      currentDateItems.add(item);
+    }
+  }
+  dayGroupedTransaction.add(Tuple2<String, List>('items', currentDateItems));
+  dayGroupedTransaction
+      .add(Tuple2<String, DateTime>('date', latestTransactionDate));
+  dayGroupedTransaction.add(2);
+  dayGroupedTransaction.add(1);
+  dayGroupedTransaction.add(0);
+  return dayGroupedTransaction.reversed.toList();
+}
+
+String getDateToShow(DateTime date) {
+  String dateToShow = DateFormat('EEEE, MMM dd yyyy').format(date);
+  DateTime now = new DateTime.now();
+  var dateDifference = now.difference(date).inDays;
+  if (dateDifference == 0) {
+    dateToShow = "Today";
+  } else if (dateDifference == 1) {
+    dateToShow = "Yesterday";
+  }
+  return dateToShow;
 }
